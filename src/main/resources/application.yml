@@ -8,16 +8,13 @@ spring:
     username: root
 
 mybatis-plus:
-  configuration:
-    cache-enabled: false
-    map-underscore-to-camel-case: true
   typeAliasesPackage: com.example.demo.entity
   mapper-locations: classpath:mapper/*.xml
   typeEnumsPackage: com.example.demo.enums
-  global-config:
-    db-config:
-      table-underline: true
-      field-strategy: not-null
-      capital-mode: true
-      column-like: true
-      id-type: auto
+
+logging:
+  level:
+    root: warn
+    com.example.demo.dao: trace
+  pattern:
+    console: '%p%m%n'

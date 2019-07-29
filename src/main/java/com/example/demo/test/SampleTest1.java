@@ -1,6 +1,8 @@
 package com.example.demo.test;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import org.junit.Assert;
@@ -82,5 +84,46 @@ public class SampleTest1 {
                 .lt("age",30);
         List<User> users = userDao.selectList(queryWrapper);
         users.forEach(System.out::println);
+    }
+
+    /**
+     * 分页查询
+     */
+    @Test
+    public void testPage(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        Page<User> page = new Page<User>(1,2);
+        IPage<User> iPage = userDao.selectPage(page,queryWrapper);
+        iPage.getRecords().forEach(System.out::println);
+    }
+
+    /**
+     * 分页查询，返回的record是map
+     */
+    @Test
+    public void testPageMap(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        Page<User> page = new Page<User>(1,2);
+        IPage<Map<String,Object>> iPage = userDao.selectMapsPage(page,queryWrapper);
+        iPage.getRecords().forEach(System.out::println);
+    }
+
+    /**
+     * 不执行count
+     */
+    @Test
+    public void testPageMap2(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        Page<User> page = new Page<User>(1,2,false);
+        IPage<Map<String,Object>> iPage = userDao.selectMapsPage(page,queryWrapper);
+        iPage.getRecords().forEach(System.out::println);
+    }
+
+    @Test
+    public void testMyPage(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        Page<User> page = new Page<User>(1,4);
+        IPage<User> iPage = userDao.selectUserPage(page,queryWrapper);
+        iPage.getRecords().forEach(System.out::println);
     }
 }
