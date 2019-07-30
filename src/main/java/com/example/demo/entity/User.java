@@ -11,6 +11,7 @@ import lombok.experimental.Tolerate;
 public class User {
     @TableId(value = "id",type = IdType.INPUT)
     private Long id;
+//    @TableField(condition=SqlCondition.LIKE)
     private String name;
     private Integer age;
     private String email;

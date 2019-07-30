@@ -1,7 +1,11 @@
 package com.example.demo.test;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
@@ -125,5 +129,95 @@ public class SampleTest1 {
         Page<User> page = new Page<User>(1,4);
         IPage<User> iPage = userDao.selectUserPage(page,queryWrapper);
         iPage.getRecords().forEach(System.out::println);
+    }
+
+    /**
+     * 实体作为条件构造器参数
+     */
+    @Test
+    public void selectByQueryWrapperEntity(){
+        User user = User.builder().age(20).name("c").build();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>(user);
+//        queryWrapper.like("name","明").lt("age",30);
+        List<User> users = userDao.selectList(queryWrapper);
+        System.out.println(users);
+    }
+
+    /**
+     * 根据map查询（缺点，是全等，即时配置了like也不行
+     */
+    @Test
+    public void selectByAllEq(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        Map<String,Object> map = new HashMap<>();
+        map.put("name","c");
+        map.put("age",20);
+        queryWrapper.allEq(map);
+        List<User> users = userDao.selectList(queryWrapper);
+        System.out.println(users);
+    }
+
+    /**
+     * 只返回select的第一个字段
+     */
+    @Test
+    public void selectByWrapperObj(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name","明").lt("age",30);
+        List<Object> users = userDao.selectObjs(queryWrapper);
+        System.out.println(users);
+    }
+
+
+    /**
+     * lambda条件构造器（根据实体字段名匹配）
+     */
+    @Test
+    public void selectByLambda(){
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(User::getName,"c").eq(User::getAge,20);
+        List<User> users = userDao.selectList(lambdaQueryWrapper);
+        System.out.println(users);
+    }
+
+    /**
+     * name like '%c%' and (age<40 or email is not null)
+     */
+    @Test
+    public void selectByLambda2(){
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .like(User::getName,"a")
+                .and(lqw->lqw.lt(User::getAge,40)
+                        .or()
+                        .isNotNull(User::getEmail));
+        List<User> users = userDao.selectList(lambdaQueryWrapper);
+        System.out.println(users);
+    }
+
+    /**
+     * 更新
+     */
+    @Test
+    public void updateByWrapper(){
+        //where
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("name","Jack");
+        //set
+        User user = User.builder().email("qqq@qq.com").name("李明").build();
+        userDao.update(user,updateWrapper);
+    }
+
+    /**
+     * Lambda更新
+     */
+    @Test
+    public void updateByLambda(){
+        //where
+        LambdaUpdateWrapper<User> updateWrapper = Wrappers.lambdaUpdate();
+        updateWrapper.eq(User::getName,"liming");
+        //set
+        User user = User.builder().email("qqq@qq.com").name("李明").build();
+        userDao.update(user,updateWrapper);
     }
 }
