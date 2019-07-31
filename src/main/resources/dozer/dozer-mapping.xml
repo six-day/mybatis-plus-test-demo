@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
+    <configuration>
+        <custom-converters>
+            <converter type="com.example.demo.converter.StringToEnumDozerConverter">
+                <class-a>java.lang.Enum</class-a>
+                <class-b>java.lang.String</class-b>
+            </converter>
+        </custom-converters>
+    </configuration>
+    <!--<mapping>-->
+        <!--<class-a>com.example.demo.dto.UserDto</class-a>-->
+        <!--<class-b>com.example.demo.entity.User</class-b>-->
+        <!--<field custom-converter="com.example.demo.converter.StringToEnumDozerConverter">-->
+            <!--<a>sex</a>-->
+            <!--<b>sex</b>-->
+        <!--</field>-->
+    <!--</mapping>-->
+</mappings>

@@ -61,6 +61,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-spring-boot-starter</artifactId>
+			<version>6.5.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dao.UserDao;
+import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
+import com.example.demo.utils.DozerUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -219,5 +221,10 @@ public class SampleTest1 {
         //set
         User user = User.builder().email("qqq@qq.com").name("李明").build();
         userDao.update(user,updateWrapper);
+    }
+    @Test
+    public void insertTest(){
+        UserDto dto = UserDto.builder().age(10).id(22L).name("test").email("test@qq.com").sex("1").build();
+        userDao.insert(DozerUtil.map(dto,User.class));
     }
 }
