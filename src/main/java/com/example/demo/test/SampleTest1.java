@@ -211,6 +211,24 @@ public class SampleTest1 {
     }
 
     /**
+     * 乐观锁更新
+     */
+    @Test
+    public void updateById(){
+        User user = User.builder()
+                .id(1L).name("Joked").version(0).build();
+
+        userDao.updateById(user);
+    }
+
+    /**
+     * 逻辑删除
+     */
+    @Test
+    public void deleteTest(){
+        userDao.deleteById(1);
+    }
+    /**
      * Lambda更新
      */
     @Test
